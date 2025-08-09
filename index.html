@@ -903,41 +903,32 @@
         }
 
         // Function to handle waitlist form submission
-       async function handleWaitlistSubmission(formData) {
-    const fullName = formData.get('fullName')?.trim() || '';
-    const email = formData.get('email')?.trim() || '';
-    const industry = formData.get('industry')?.trim() || '';
-    const region = formData.get('region')?.trim() || '';
-    const budget = formData.get('budget')?.trim() || '';
-    
-    // ADD THIS DEBUG LOGGING:
-    console.log('Debug - Form values:');
-    console.log('fullName:', `"${fullName}"`);
-    console.log('email:', `"${email}"`);
-    console.log('industry:', `"${industry}"`);
-    console.log('region:', `"${region}"`);
-    console.log('budget:', `"${budget}"`);
-    console.log('Validation check:', !fullName || !email || !industry || !region || !budget);
-    
-    // Check ALL required fields
-    if (!fullName || !email || !industry || !region || !budget) {
-        return {
-            success: false,
-            error: 'Please fill in all required fields to join the waitlist'
-        };
-    }
-    
-    const data = {
-        'Full Name': fullName,
-        'Email Address': email,
-        'Industry/Role': industry,
-        'Primary Region of Interest': region,
-        'Monthly Budget Range': budget
-    };
-    
-    const result = await sendToAPI('/waitlist', data);
-    return result;
-}
+        async function handleWaitlistSubmission(formData) {
+            const fullName = formData.get('fullName')?.trim() || '';
+            const email = formData.get('email')?.trim() || '';
+            const industry = formData.get('industry')?.trim() || '';
+            const region = formData.get('region')?.trim() || '';
+            const budget = formData.get('budget')?.trim() || '';
+            
+            // Check ALL required fields
+            if (!fullName || !email || !industry || !region || !budget) {
+                return {
+                    success: false,
+                    error: 'Please fill in all required fields to join the waitlist'
+                };
+            }
+            
+            const data = {
+                'Full Name': fullName,
+                'Email Address': email,
+                'Industry/Role': industry,
+                'Primary Region of Interest': region,
+                'Monthly Budget Range': budget
+            };
+            
+            const result = await sendToAPI('/waitlist', data);
+            return result;
+        }
     
         // Function to handle suggestions form submission
         async function handleSuggestionsSubmission(formData) {
@@ -1122,12 +1113,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
