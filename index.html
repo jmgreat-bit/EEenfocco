@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENFOCO - Global Content Beyond Western Perspectives</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            padding: 20px 0;
+            position: relative;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #4ECDC4;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #4ECDC4, #44A08D);
+            border-radius: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .nav-status {
+            background: rgba(78, 205, 196, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(78, 205, 196, 0.15);
+            color: #4ECDC4;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Problem Section */
+        .problem {
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            margin: 40px 0;
+            border-radius: 20px;
+        }
+
+        .problem h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #FF6B6B;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .problem-item {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .problem-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .problem-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FF6B6B;
+        }
+
+        /* Solution Section */
+        .solution {
+            padding: 60px 0;
+        }
+
+        .solution h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #4ECDC4;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4ECDC4;
+        }
+
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #4ECDC4;
+        }
+
+        /* Platform Preview */
+        .preview {
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.02);
+            margin: 40px 0;
+            border-radius: 20px;
+        }
+
+        .preview h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #4ECDC4;
+        }
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .mockup-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .mockup-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(78, 205, 196, 0.2);
+        }
+
+        .mockup-item img {
+            width: 100%; 
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px; 
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .mockup-item:hover img {
+            transform: scale(1.02);
+        }
+
+        .mockup-item h3 {
+            margin: 20px 0 10px;
+            color: #4ECDC4;
+            font-size: 1.3rem;
+        }
+
+        .mockup-item p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Modal for Full Image View */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+        }
+
+        .modal-caption {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-caption h3 {
+            color: #4ECDC4;
+            margin-bottom: 10px;
+        }
+
+        .modal-caption p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Community sections */
+        .community {
+            padding: 60px 0;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(255, 159, 67, 0.1) 100%);
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .community h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #FFB74D;
+        }
+
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .community-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .community-card h3 {
+            color: #FFB74D;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .community-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .community-form input, .community-form textarea {
+            padding: 15px;
+            border: 2px solid rgba(255, 183, 77, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+        }
+
+        .community-form textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .community-form input::placeholder, .community-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .community-form input:focus, .community-form textarea:focus {
+            outline: none;
+            border-color: #FFB74D;
+            box-shadow: 0 0 20px rgba(255, 183, 77, 0.3);
+        }
+
+        .community-btn {
+            background: linear-gradient(135deg, #FFB74D 0%, #FF9800 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .community-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 183, 77, 0.4);
+        }
+
+        .community-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Waitlist Form */
+        .waitlist {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(68, 160, 141, 0.1) 100%);
+            border-radius: 20px;
+            margin: 40px 0;
+        }
+
+        .waitlist h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #4ECDC4;
+        }
+
+        .waitlist-form {
+            max-width: 500px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4ECDC4;
+        }
+
+        .form-group input, .form-group select {
+            padding: 15px;
+            border: 2px solid rgba(78, 205, 196, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group select {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: white;
+            padding: 10px;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4ECDC4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4ECDC4;
+            display: block;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        /* Form Messages */
+        .form-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .form-message.success {
+            background-color: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .form-message.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .stats {
+                gap: 30px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .community-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 95vw;
+                max-height: 95vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <div class="logo-icon">E</div>
+                    ENFOCO
+                </div>
+                <div class="nav-status">Coming Soon</div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">🌍 Global Content Platform</div>
+                <h1>Professional Content Beyond the Algorithm</h1>
+                <p>Experience curated insights through updated local and global content streams—defined by relevance, driven by context, and shaped by the voices that algorithms often overlook.</p>
+            </div>
+        </section>
+
+        <section class="problem">
+            <div class="container">
+                <h2>The Problem with Current Platforms</h2>
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <div class="problem-icon">🌐</div>
+                        <h3>Western-Biased Algorithms</h3>
+                        <p>Global content discovery remains skewed, where algorithms amplify dominant voices and overlook nuanced, locally curated updates—leaving over 70% of region-specific stories buried, unindexed, or absent from global visibility.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-icon">📍</div>
+                        <h3>Geographic Blind Spots</h3>
+                        <p>Need insights from African markets? Asian business trends? Local expertise? Current platforms leave you searching in the dark.</p>
+                    </div>
+                    <div class="problem-item">
+                        <div class="problem-icon">🔍</div>
+                        <h3>No Local Verification</h3>
+                        <p>When you find content from emerging markets, there's no way to verify quality or credibility of local sources.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="solution">
+            <div class="container">
+                <h2>How ENFOCO Solves This</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Manually Curated Regional Sources</h3>
+                        <p>We solve the chaos of fragmented coverage by curating verified sources that reveal what's really happening in each region. Every voice adds depth. Every story is chosen for clarity, impact, and relevance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✅</div>
+                        <h3>Verified Local Expertise</h3>
+                        <p>Every source is verified for credibility and professional relevance. Get trusted insights from regions you can't easily monitor yourself.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>Multi-Format Content</h3>
+                        <p>Articles, videos, audio content, and professional reports - all organized in one platform for comprehensive regional intelligence.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎓</div>
+                        <h3>Professional Learning Focus</h3>
+                        <p>Not just news - business insights, professional development, industry analysis, and educational content from diverse global perspectives.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="preview">
+            <div class="container">
+                <h2>Platform Preview</h2>
+                <p style="text-align: center; margin-bottom: 40px; color: rgba(255, 255, 255, 0.8);">
+                    Here's what we're building - click on any image to see it in full size:
+                </p>
+                
+                <div class="mockup-grid">
+                    <div class="mockup-item" onclick="openModal('images/chin.jpg', 'Global Stream', 'Real-time content from verified sources across all regions, organized by relevance and quality.')">
+                        <img src="images/chin.jpg" alt="Global Stream mockup">
+                        <h3>Global Stream</h3>
+                        <p>Real-time content from verified sources across all regions, organized by relevance and quality.</p>
+                    </div>
+                    
+                    <div class="mockup-item" onclick="openModal('images/chinese.jpg', 'Explore & Verified', 'Browse curated content by region, topic, or format. All sources verified for professional quality.')">
+                        <img src="images/chinese.jpg" alt="Explore view mockup">
+                        <h3>Explore & Verified</h3>
+                        <p>Browse curated content by region, topic, or format. All sources verified for professional quality.</p>
+                    </div>
+                    
+                    <div class="mockup-item" onclick="openModal('images/solomon.jpg', 'Multi-Format Discovery', 'Articles, videos, books, and talks - all in one unified discovery experience.')">
+                        <img src="images/solomon.jpg" alt="Content types mockup">
+                        <h3>Multi-Format Discovery</h3>
+                        <p>Articles, videos, books, and talks - all in one unified discovery experience.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Modal for full-size images -->
+        <div id="imageModal" class="modal" onclick="closeModal()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+                <img id="modalImage" class="modal-image" src="" alt="">
+                <div class="modal-caption">
+                    <h3 id="modalTitle"></h3>
+                    <p id="modalDescription"></p>
+                </div>
+            </div>
+        </div>
+
+        <section class="community">
+            <div class="container">
+                <h2>Help Shape ENFOCO</h2>
+                <p style="text-align: center; margin-bottom: 40px; color: rgba(255, 255, 255, 0.8);">
+                    We're building this with the community. Share your ideas, suggest improvements, or offer your expertise to help make ENFOCO better.
+                </p>
+                
+                <div class="community-grid">
+                    <div class="community-card">
+                        <h3>💡 Share Your Ideas & Suggestions</h3>
+                        <p style="margin-bottom: 20px; color: rgba(255, 255, 255, 0.7);">
+                            What features would make ENFOCO perfect for your needs? Which regions should we prioritize? Any content sources we should include?
+                        </p>
+                        
+                        <form class="community-form" id="suggestions-form">
+                            <input type="email" name="email" placeholder="Your email (so we can follow up)" required>
+                            <textarea name="suggestion" placeholder="Share your suggestions, feature requests, or content sources you'd like to see included..." required></textarea>
+                            <button type="submit" class="community-btn">Send Suggestion 💌</button>
+                        </form>
+                    </div>
+                    
+                    <div class="community-card">
+                        <h3>🤝 Want to Help Build ENFOCO?</h3>
+                        <p style="margin-bottom: 20px; color: rgba(255, 255, 255, 0.7);">
+                            We'd love to collaborate with you! Tell us how you'd like to help - we read every message personally and will get back to you.
+                        </p>
+                        
+                        <form class="community-form" id="partnership-form">
+                            <input type="email" name="email" placeholder="Your email" required>
+                            <textarea name="details" placeholder="Tell us how you'd like to help! Examples: content curation, regional expertise, UI/UX design, development, beta testing, investment/funding, marketing/outreach, partnerships, or anything else you can offer..." required></textarea>
+                            <button type="submit" class="community-btn">I Want to Help! 🚀</button>
+                        </form>
+                        
+                        <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 10px;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px;">
+                                📧 All messages are read personally by our founder. We respond to every submission!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="waitlist">
+            <div class="container">
+                <h2>Join the Waitlist</h2>
+                <p>Be among the first to access professional content from regions the big platforms ignore. Help us prioritize which regions and content types to launch first.</p>
+                
+                <form class="waitlist-form" id="waitlist-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" name="fullName" required placeholder="Your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" name="email" required placeholder="your.email@company.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">Your Industry/Role *</label>
+                        <select name="industry" required>
+                            <option value="">Please select your industry</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Government">Government</option>
+                            <option value="NGO">NGO</option>
+                            <option value="Student">Student</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Media/Journalism">Media/Journalism</option>
+                            <option value="Research">Research</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="region">Which regions interest you most? *</label>
+                        <select name="region" required>
+                            <option value="">Please select your primary region of interest</option>
+                            <option value="Africa">Africa</option>
+                            <option value="Latin America">Latin America</option>
+                            <option value="Southeast Asia">Southeast Asia</option>
+                            <option value="Eastern Europe">Eastern Europe</option>
+                            <option value="Middle East">Middle East</option>
+                            <option value="South Asia">South Asia</option>
+                            <option value="East Asia">East Asia</option>
+                            <option value="All regions equally">All regions equally</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budget">What would you prefer to pay monthly? *</label>
+                        <select name="budget" required>
+                            <option value="">Please select your budget preference</option>
+                            <option value="Free version only">Prefer free version only</option>
+                            <option value="$10-20/month">$10-20/month</option>
+                            <option value="$21-40/month">$21-40/month</option>
+                            <option value="$41-70/month">$41-70/month</option>
+                            <option value="$71-100/month">$71-100/month</option>
+                            <option value="$100+/month">$100+/month</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Join Waitlist →</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="stat-item">
+                <span class="stat-number">50+</span>
+                <span class="stat-label">Countries Covered</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">200+</span>
+                <span class="stat-label">Verified Sources</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Content Types</span>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 ENFOCO. A sophisticated content platform for professionals and students seeking quality information through immersive discovery experiences.</p>
+        </div>
+    </footer>
+
+    <script>
+        // API endpoint for form submissions (will be your backend API)
+        const API_BASE_URL = '/api'; // Change this to your backend URL when deployed
+        
+        // Modal functionality for images
+        function openModal(imageSrc, title, description) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            
+            modalImage.src = imageSrc;
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modal.classList.add('active');
+            
+            // Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Generic function to send data to backend API
+        async function sendToAPI(endpoint, data) {
+            try {
+                console.log(`Sending to ${endpoint}:`, data);
+                
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const responseData = await response.json();
+                console.log('API Response:', responseData);
+
+                if (!response.ok) {
+                    return { 
+                        success: false, 
+                        error: responseData.error || `HTTP ${response.status}`,
+                        details: responseData
+                    };
+                }
+
+                return { success: true, data: responseData };
+            } catch (error) {
+                console.error('Error sending to API:', error);
+                return { 
+                    success: false, 
+                    error: 'Network error. Please check your connection and try again.',
+                    details: error.toString()
+                };
+            }
+        }
+
+        // Function to handle waitlist form submission
+        async function handleWaitlistSubmission(formData) {
+            const fullName = formData.get('fullName')?.trim() || '';
+            const email = formData.get('email')?.trim() || '';
+            const industry = formData.get('industry')?.trim() || '';
+            const region = formData.get('region')?.trim() || '';
+            const budget = formData.get('budget')?.trim() || '';
+            
+            // Check ALL required fields
+            if (!fullName || !email || !industry || !region || !budget) {
+                return {
+                    success: false,
+                    error: 'Please fill in all required fields to join the waitlist'
+                };
+            }
+
+            const data = {
+                fullName,
+                email,
+                industry,
+                region,
+                budget
+            };
+
+            const result = await sendToAPI('/waitlist', data);
+            return result;
+        }
+
+        // Function to handle suggestions form submission
+        async function handleSuggestionsSubmission(formData) {
+            const email = formData.get('email')?.trim() || '';
+            const suggestion = formData.get('suggestion')?.trim() || '';
+
+            if (!email || !suggestion) {
+                return {
+                    success: false,
+                    error: 'Please fill in all required fields'
+                };
+            }
+
+            const data = {
+                email,
+                suggestion
+            };
+
+            const result = await sendToAPI('/suggestions', data);
+            return result;
+        }
+
+        // Function to handle partnership form submission
+        async function handlePartnershipSubmission(formData) {
+            const email = formData.get('email')?.trim() || '';
+            const details = formData.get('details')?.trim() || '';
+
+            if (!email || !details) {
+                return { 
+                    success: false, 
+                    error: 'Please fill in all required fields'
+                };
+            }
+
+            const data = {
+                email,
+                details
+            };
+
+            const result = await sendToAPI('/partnerships', data);
+            return result;
+        }
+
+        // Function to show success/error messages
+        function showMessage(message, isSuccess = true, form) {
+            // Remove existing messages
+            const existingMessage = form.querySelector('.form-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            // Create new message
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `form-message ${isSuccess ? 'success' : 'error'}`;
+            messageDiv.textContent = message;
+            messageDiv.style.display = 'block';
+
+            // Add message to form
+            form.appendChild(messageDiv);
+
+            // Auto-hide messages after 5 seconds
+            setTimeout(() => {
+                if (messageDiv.parentNode) {
+                    messageDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Event listeners for all forms
+        document.addEventListener('DOMContentLoaded', function() {
+            // Waitlist form
+            const waitlistForm = document.getElementById('waitlist-form');
+            if (waitlistForm) {
+                waitlistForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Joining...';
+                    submitButton.disabled = true;
+
+                    const formData = new FormData(this);
+                    const result = await handleWaitlistSubmission(formData);
+
+                    if (result.success) {
+                        showMessage('🎉 Welcome to the waitlist! We\'ll be in touch soon.', true, this);
+                        this.reset();
+                    } else {
+                        showMessage(result.error, false, this);
+                    }
+
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            }
+
+            // Suggestions form
+            const suggestionsForm = document.getElementById('suggestions-form');
+            if (suggestionsForm) {
+                suggestionsForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Sending...';
+                    submitButton.disabled = true;
+
+                    const formData = new FormData(this);
+                    const result = await handleSuggestionsSubmission(formData);
+
+                    if (result.success) {
+                        showMessage('💡 Thanks for your suggestion! We read every message personally.', true, this);
+                        this.reset();
+                    } else {
+                        showMessage(result.error || 'Unable to send suggestion right now. Please try again later.', false, this);
+                    }
+
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            }
+
+            // Partnership form
+            const partnershipForm = document.getElementById('partnership-form');
+            if (partnershipForm) {
+                partnershipForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const submitButton = this.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Sending...';
+                    submitButton.disabled = true;
+
+                    const formData = new FormData(this);
+                    const result = await handlePartnershipSubmission(formData);
+
+                    if (result.success) {
+                        showMessage('🤝 Awesome! We\'ll review your offer and get back to you soon.', true, this);
+                        this.reset();
+                    } else {
+                        showMessage(result.error || 'Something went wrong. Please try again or contact us directly.', false, this);
+                        console.error('Partnership submission error:', result);
+                    }
+
+                    submitButton.textContent = originalText;
+                    submitButton.disabled = false;
+                });
+            }
+        });
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add form validation feedback
+        document.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+            field.addEventListener('blur', function() {
+                if (this.tagName === 'SELECT') {
+                    if (!this.value) {
+                        this.style.borderColor = 'rgba(244, 67, 54, 0.6)';
+                    } else {
+                        this.style.borderColor = 'rgba(78, 205, 196, 0.6)';
+                    }
+                } else {
+                    if (!this.value.trim()) {
+                        this.style.borderColor = 'rgba(244, 67, 54, 0.6)';
+                    } else {
+                        this.style.borderColor = 'rgba(78, 205, 196, 0.6)';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
