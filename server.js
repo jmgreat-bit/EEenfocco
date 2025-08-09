@@ -28,22 +28,28 @@ const AIRTABLE_CONFIG = {
 // Generic function to send data to Airtable
 async function sendToAirtable(tableName, fields) {
    const url = `https://api.airtable.com/v0/${AIRTABLE_CONFIG.baseId}/${tableName}`;
-   
    try {
-       const response = await axios.post(url, {
-           records: [{ fields }]
-       }, {
-           headers: {
-               'Authorization': `Bearer ${AIRTABLE_CONFIG.token}`,
-               'Content-Type': 'application/json'
+       const response = await axios.post(
+           url,
+           {
+               records: [{ fields }],
+               typecast: true
+           },
+           {
+               headers: {
+                   Authorization: `Bearer ${AIRTABLE_CONFIG.token}`,
+                   'Content-Type': 'application/json'
+               }
            }
-       });
+       );
        return { success: true, data: response.data };
    } catch (error) {
-       console.error('Airtable error:', error.response?.data || error.message);
-       return { 
-           success: false, 
-           error: error.response?.data?.error || error.message 
+       const airtableError = error.response?.data || null;
+       console.error('Airtable error:', airtableError || error.message);
+       return {
+           success: false,
+           error: airtableError?.error || error.message,
+           airtable: airtableError
        };
    }
 }
@@ -66,12 +72,10 @@ app.post('/api/waitlist', async (req, res) => {
        'Status': 'New'
    };
    const result = await sendToAirtable(AIRTABLE_CONFIG.tables.waitlist, fields);
-   
    if (result.success) {
-       res.json({ message: 'Successfully joined waitlist!' });
-   } else {
-       res.status(500).json({ error: 'Failed to join waitlist' });
+       return res.json({ message: 'Successfully joined waitlist!' });
    }
+   return res.status(500).json({ error: 'Failed to join waitlist', details: result.airtable || result.error });
 });
 
 app.post('/api/suggestions', async (req, res) => {
@@ -90,12 +94,10 @@ app.post('/api/suggestions', async (req, res) => {
        'Status': 'New'
    };
    const result = await sendToAirtable(AIRTABLE_CONFIG.tables.suggestions, fields);
-   
    if (result.success) {
-       res.json({ message: 'Suggestion received!' });
-   } else {
-       res.status(500).json({ error: 'Failed to send suggestion' });
+       return res.json({ message: 'Suggestion received!' });
    }
+   return res.status(500).json({ error: 'Failed to send suggestion', details: result.airtable || result.error });
 });
 
 app.post('/api/partnerships', async (req, res) => {
@@ -112,12 +114,10 @@ app.post('/api/partnerships', async (req, res) => {
        'Contact Status': 'New'
    };
    const result = await sendToAirtable(AIRTABLE_CONFIG.tables.partnerships, fields);
-   
    if (result.success) {
-       res.json({ message: 'Partnership request received!' });
-   } else {
-       res.status(500).json({ error: 'Failed to send partnership request' });
+       return res.json({ message: 'Partnership request received!' });
    }
+   return res.status(500).json({ error: 'Failed to send partnership request', details: result.airtable || result.error });
 });
 
 // Health check
