@@ -903,20 +903,33 @@
         }
 
         // Function to handle waitlist form submission
-        async function handleWaitlistSubmission(formData) {
+       async function handleWaitlistSubmission(formData) {
     const fullName = formData.get('fullName')?.trim() || '';
     const email = formData.get('email')?.trim() || '';
     const industry = formData.get('industry')?.trim() || '';
     const region = formData.get('region')?.trim() || '';
     const budget = formData.get('budget')?.trim() || '';
     
-    // Check ALL required fields (validation uses original variable names)
+    // Check ALL required fields
     if (!fullName || !email || !industry || !region || !budget) {
         return {
             success: false,
             error: 'Please fill in all required fields to join the waitlist'
         };
     }
+    
+    // Send data with Airtable field names
+    const data = {
+        'Full Name': fullName,
+        'Email Address': email,
+        'Industry/Role': industry,
+        'Primary Region of Interest': region,
+        'Monthly Budget Range': budget
+    };
+    
+    const result = await sendToAPI('/waitlist', data);
+    return result;
+}
     
     // Send to API with Airtable field names
     const data = {
@@ -1116,6 +1129,7 @@
 </body>
 
 </html>
+
 
 
 
