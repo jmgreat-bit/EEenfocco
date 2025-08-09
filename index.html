@@ -931,19 +931,6 @@
     return result;
 }
     
-    // Send to API with Airtable field names
-    const data = {
-        'Full Name': fullName,
-        'Email Address': email,
-        'Industry/Role': industry,
-        'Primary Region of Interest': region,
-        'Monthly Budget Range': budget
-    };
-    
-    const result = await sendToAPI('/waitlist', data);
-    return result;
-}
-
         // Function to handle suggestions form submission
         async function handleSuggestionsSubmission(formData) {
             const email = formData.get('email')?.trim() || '';
@@ -1129,6 +1116,7 @@
 </body>
 
 </html>
+
 
 
 
