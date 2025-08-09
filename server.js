@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
@@ -8,7 +9,14 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+// Serve static files and images explicitly
 app.use(express.static(__dirname));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// Optional: serve a basic favicon to avoid 404 noise
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'images', 'chin.png'));
+});
 
 app.get('/', (req, res) => {
  res.sendFile(__dirname + '/index.html');
