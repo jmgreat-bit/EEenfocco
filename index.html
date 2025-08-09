@@ -904,31 +904,31 @@
 
         // Function to handle waitlist form submission
         async function handleWaitlistSubmission(formData) {
-            const fullName = formData.get('fullName')?.trim() || '';
-            const email = formData.get('email')?.trim() || '';
-            const industry = formData.get('industry')?.trim() || '';
-            const region = formData.get('region')?.trim() || '';
-            const budget = formData.get('budget')?.trim() || '';
-            
-            // Check ALL required fields
-            if (!fullName || !email || !industry || !region || !budget) {
-                return {
-                    success: false,
-                    error: 'Please fill in all required fields to join the waitlist'
-                };
-            }
-
-            const data = {
-                fullName,
-                email,
-                industry,
-                region,
-                budget
-            };
-
-            const result = await sendToAPI('/waitlist', data);
-            return result;
-        }
+    const fullName = formData.get('fullName')?.trim() || '';
+    const email = formData.get('email')?.trim() || '';
+    const industry = formData.get('industry')?.trim() || '';
+    const region = formData.get('region')?.trim() || '';
+    const budget = formData.get('budget')?.trim() || '';
+    
+    // Check ALL required fields
+    if (!fullName || !email || !industry || !region || !budget) {
+        return {
+            success: false,
+            error: 'Please fill in all required fields to join the waitlist'
+        };
+    }
+    
+    const data = {
+        'Full Name': fullName,                           // ✅ Correct field name
+        'Email Address': email,                          // ✅ Correct field name
+        'Industry/Role': industry,                       // ✅ Correct field name
+        'Primary Region of Interest': region,            // ✅ Correct field name
+        'Monthly Budget Range': budget                   // ✅ Correct field name
+    };
+    
+    const result = await sendToAPI('/waitlist', data);
+    return result;
+}
 
         // Function to handle suggestions form submission
         async function handleSuggestionsSubmission(formData) {
@@ -1115,5 +1115,6 @@
 </body>
 
 </html>
+
 
 
