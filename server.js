@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('frontend')); // Serve frontend files
+app.use(express.static(__dirname)); // Serve frontend files
 
 // Airtable configuration
 const AIRTABLE_CONFIG = {
@@ -131,4 +131,5 @@ app.get('/api/health', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`🚀 ENFOCO Backend running on http://localhost:${PORT}`);
+
 });
