@@ -910,7 +910,7 @@
     const region = formData.get('region')?.trim() || '';
     const budget = formData.get('budget')?.trim() || '';
     
-    // Check ALL required fields
+    // Check ALL required fields (validation uses original variable names)
     if (!fullName || !email || !industry || !region || !budget) {
         return {
             success: false,
@@ -918,12 +918,13 @@
         };
     }
     
+    // Send to API with Airtable field names
     const data = {
-        'Full Name': fullName,                           // ✅ Correct field name
-        'Email Address': email,                          // ✅ Correct field name
-        'Industry/Role': industry,                       // ✅ Correct field name
-        'Primary Region of Interest': region,            // ✅ Correct field name
-        'Monthly Budget Range': budget                   // ✅ Correct field name
+        'Full Name': fullName,
+        'Email Address': email,
+        'Industry/Role': industry,
+        'Primary Region of Interest': region,
+        'Monthly Budget Range': budget
     };
     
     const result = await sendToAPI('/waitlist', data);
@@ -1115,6 +1116,7 @@
 </body>
 
 </html>
+
 
 
 
