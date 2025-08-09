@@ -910,6 +910,15 @@
     const region = formData.get('region')?.trim() || '';
     const budget = formData.get('budget')?.trim() || '';
     
+    // ADD THIS DEBUG LOGGING:
+    console.log('Debug - Form values:');
+    console.log('fullName:', `"${fullName}"`);
+    console.log('email:', `"${email}"`);
+    console.log('industry:', `"${industry}"`);
+    console.log('region:', `"${region}"`);
+    console.log('budget:', `"${budget}"`);
+    console.log('Validation check:', !fullName || !email || !industry || !region || !budget);
+    
     // Check ALL required fields
     if (!fullName || !email || !industry || !region || !budget) {
         return {
@@ -918,7 +927,6 @@
         };
     }
     
-    // Send data with Airtable field names
     const data = {
         'Full Name': fullName,
         'Email Address': email,
@@ -1116,6 +1124,7 @@
 </body>
 
 </html>
+
 
 
 
