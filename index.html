@@ -58,81 +58,12 @@
             font-size: 20px;
         }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
         .nav-status {
             background: rgba(78, 205, 196, 0.2);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
             border: 1px solid rgba(78, 205, 196, 0.3);
-        }
-
-        /* Google Translate Styling - Make it look like your design */
-        #google_translate_element {
-            display: inline-block !important;
-        }
-
-        /* Style the Google Translate widget to match your design */
-        .goog-te-combo {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            border-radius: 8px !important;
-            padding: 8px 12px !important;
-            color: white !important;
-            font-size: 13px !important;
-            cursor: pointer !important;
-            outline: none !important;
-            backdrop-filter: blur(10px) !important;
-            transition: all 0.3s ease !important;
-            min-width: 100px !important;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-        }
-
-        .goog-te-combo:hover {
-            background: rgba(255, 255, 255, 0.15) !important;
-            border-color: rgba(78, 205, 196, 0.4) !important;
-        }
-
-        .goog-te-combo:focus {
-            border-color: #4ECDC4 !important;
-            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3) !important;
-        }
-
-        /* Hide the Google Translate branding */
-        .goog-te-gadget {
-            font-size: 0 !important;
-            color: transparent !important;
-        }
-
-        .goog-te-gadget > span > a {
-            display: none !important;
-        }
-
-        .goog-te-gadget > span {
-            border: none !important;
-            background: none !important;
-        }
-
-        /* Hide the "Powered by Google" text */
-        .goog-te-gadget .goog-te-combo {
-            margin: 0 !important;
-        }
-
-        /* Style the options */
-        .goog-te-combo option {
-            background: #1a1a2e !important;
-            color: white !important;
-            padding: 8px !important;
-        }
-
-        /* Hide the custom dropdown since we're using Google's now */
-        .language-dropdown {
-            display: none;
         }
 
         /* Hero Section */
@@ -672,16 +603,6 @@
         }
 
         @media (max-width: 768px) {
-            .nav {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-
-            .nav-right {
-                justify-content: center;
-            }
-
             .hero h1 {
                 font-size: 2.5rem;
             }
@@ -708,17 +629,12 @@
             }
         }
     </style>
-    <!-- Google Translate setup -->
     <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,es,fr,de,it,pt,ru,zh,ja,ko,ar,hi,tr,pl,nl,sv,da,no,fi',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-        }
-    </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
     <header class="header">
@@ -728,12 +644,8 @@
                     <div class="logo-icon">E</div>
                     ENFOCO
                 </div>
-                <div class="nav-right">
-                    <div class="nav-status">Coming Soon</div>
-                    
-                    <!-- Google Translate Element (now styled to match your design) -->
-                    <div id="google_translate_element"></div>
-                </div>
+                <div class="nav-status">Coming Soon</div>
+                <div id="google_translate_element" style="display: inline-block; margin-left: 20px;"></div>
             </nav>
         </div>
     </header>
@@ -759,7 +671,7 @@
                     <div class="problem-item">
                         <div class="problem-icon">📍</div>
                         <h3>Geographic Blind Spots</h3>
-                        <p>Need insights from African markets? Asian business trends? Local expertise? Even when you search still algorithm pushes you back, Current platforms leave you searching in the dark.</p>
+                        <p>Need insights from African markets? Asian business trends? Local expertise?even when you search still alogrthim pushes you back, Current platforms leave you searching in the dark.</p>
                     </div>
                     <div class="problem-item">
                         <div class="problem-icon">🔍</div>
@@ -808,35 +720,36 @@
                 <!-- Notice about video/picture content -->
                 <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(78, 205, 196, 0.2);">
                     <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; margin: 0;">
-                        📱 <strong>Note:</strong> These mockups show the core interface design and articles part only, as we are trying to validate the idea, video kept getting messy but we are working on everything. As of now I only have video and article on news part not education part.
+                        📱 <strong>Note:</strong> These mockups show the core interface design and articles part only, as we are trying to validate the idea, vide kept getting messy but we are working on everything. as of now i only has video and article on news part not education part. 
+                        
                     </p>
                 </div>
                 
                 <div class="mockup-grid">
-                    <div class="mockup-item" onclick="openModal('images/chin.png', 'Global Stream', 'Real-time verified content from all regions, organized by relevance not algorithms. Built-in translator ensures equal visibility for underrepresented countries.')">
-                        <img src="images/chin.png" alt="Global Stream mockup">
-                        <h3>Global Stream</h3>
-                        <p>Real-time verified content from all regions, organized by relevance not algorithms. Built-in translator ensures equal visibility for underrepresented countries.</p>
-                    </div>
+    <div class="mockup-item" onclick="openModal('images/chin.png', 'Global Stream', 'Real-time verified content from all regions, organized by relevance not algorithms. Built-in translator ensures equal visibility for underrepresented countries.')">
+        <img src="images/chin.png" alt="Global Stream mockup">
+        <h3>Global Stream</h3>
+        <p>Real-time verified content from all regions, organized by relevance not algorithms. Built-in translator ensures equal visibility for underrepresented countries.</p>
+    </div>
 
-                    <div class="mockup-item" onclick="openModal('images/chinese.png', 'Explore & Verified', 'Professionally verified content from international and authentic local sources. Solves credibility issues while maintaining regional diversity traditional platforms ignore.')">
-                        <img src="images/chinese.png" alt="Explore view mockup">
-                        <h3>Explore & Verified</h3>
-                        <p>Professionally verified content from international and authentic local sources. Solves credibility issues while maintaining regional diversity traditional platforms ignore.</p>
-                    </div>
+    <div class="mockup-item" onclick="openModal('images/chinese.png', 'Explore & Verified', 'Professionally verified content from international and authentic local sources. Solves credibility issues while maintaining regional diversity traditional platforms ignore.')">
+        <img src="images/chinese.png" alt="Explore view mockup">
+        <h3>Explore & Verified</h3>
+        <p>Professionally verified content from international and authentic local sources. Solves credibility issues while maintaining regional diversity traditional platforms ignore.</p>
+    </div>
 
-                    <div class="mockup-item" onclick="openModal('images/SOLOMON.png', 'Multi-Format Discovery', 'Articles, videos, books, and talks in one seamless interface. Accommodates different cultural preferences across diverse global audiences.')">
-                        <img src="images/SOLOMON.png" alt="Content types mockup">
-                        <h3>Multi-Format Discovery</h3>
-                        <p>Articles, videos, books, and talks in one seamless interface. Accommodates different cultural preferences across diverse global audiences with a very deep logic behind searching and collect and analyze and report.</p>
-                    </div>
+    <div class="mockup-item" onclick="openModal('images/SOLOMON.png', 'Multi-Format Discovery', 'Articles, videos, books, and talks in one seamless interface. Accommodates different cultural preferences across diverse global audiences.')">
+        <img src="images/SOLOMON.png" alt="Content types mockup">
+        <h3>Multi-Format Discovery</h3>
+        <p>Articles, videos, books, and talks in one seamless interface. Accommodates different cultural preferences across diverse global audiences. with avery deep logic behind searching and collect and analyze and report</p>
+    </div>
 
-                    <div class="mockup-item" onclick="openModal('images/lastly.png', 'Content Curation Hub', 'Human-curated content connecting local expertise with global audiences. Anti-algorithm approach prioritizing authentic regional perspectives over engagement metrics.')">
-                        <img src="images/lastly.png" alt="Content Curation Hub mockup">
-                        <h3>Content Curation Hub</h3>
-                        <p>Human-curated content connecting local expertise with global audiences. Anti-algorithm approach prioritizing authentic regional perspectives over engagement metrics.</p>
-                    </div>
-                </div>
+    <div class="mockup-item" onclick="openModal('images/lastly.png', 'Content Curation Hub', 'Human-curated content connecting local expertise with global audiences. Anti-algorithm approach prioritizing authentic regional perspectives over engagement metrics.')">
+        <img src="images/lastly.png" alt="Content Curation Hub mockup">
+        <h3>Content Curation Hub</h3>
+        <p>Human-curated content connecting local expertise with global audiences. Anti-algorithm approach prioritizing authentic regional perspectives over engagement metrics.</p>
+    </div>
+</div>
             </div>
         </section>
 
@@ -851,6 +764,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <section class="community">
             <div class="container">
@@ -869,7 +784,7 @@
                         <form class="community-form" id="suggestions-form">
                             <input type="email" name="email" placeholder="Your email (so we can follow up)" required>
                             <textarea name="suggestion" placeholder="Share your suggestions, feature requests, or content sources you'd like to see included..." required></textarea>
-                            <button type="submit" class="community-btn">Send Suggestion 💌</button>
+                            <button type="submit" class="community-btn" >Send Suggestion 💌</button>
                         </form>
                     </div>
                     
@@ -1322,3 +1237,5 @@
     </script>
 </body>
 </html>
+
+
