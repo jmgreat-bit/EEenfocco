@@ -323,6 +323,49 @@
             background: rgba(255, 255, 255, 0.3);
         }
 
+        /* Share Section */
+        .share-section {
+            padding: 40px 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            margin: 30px 0;
+            border-radius: 20px;
+        }
+        .share-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            color: white;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+        }
+        .share-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(78, 205, 196, 0.4);
+        }
+        .share-button:active {
+            transform: translateY(-1px);
+        }
+        .share-icon {
+            font-size: 20px;
+        }
+        .share-text {
+            font-size: 16px;
+        }
+        .share-note {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
         /* Community sections */
         .community {
             padding: 60px 0;
@@ -667,6 +710,14 @@
                     Here's what we're building - click on any image to see it in full size:
                 </p>
                 
+                <!-- Notice about video/picture content -->
+                <div style="text-align: center; margin-bottom: 40px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 15px; border: 1px solid rgba(78, 205, 196, 0.2);">
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; margin: 0;">
+                        📱 <strong>Note:</strong> These mockups show the core interface design. Video content and additional picture galleries will be available in the full platform, 
+                        but we're focusing on demonstrating the core user experience and navigation structure first.
+                    </p>
+                </div>
+                
                 <div class="mockup-grid">
                     <div class="mockup-item" onclick="openModal('images/chin.png', 'Global Stream', 'Real-time content from verified sources across all regions, organized by relevance and quality.')">
                         <img src="images/chin.png" alt="Global Stream mockup">
@@ -685,6 +736,12 @@
                         <h3>Multi-Format Discovery</h3>
                         <p>Articles, videos, books, and talks - all in one unified discovery experience.</p>
                     </div>
+                    
+                    <div class="mockup-item" onclick="openModal('images/lastly.png', 'Content Curation Hub', 'Professional content curation and discovery interface showcasing regional expertise and verified sources.')">
+                        <img src="images/lastly.png" alt="Content Curation Hub mockup">
+                        <h3>Content Curation Hub</h3>
+                        <p>Professional content curation and discovery interface showcasing regional expertise and verified sources.</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -700,6 +757,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <section class="community">
             <div class="container">
@@ -809,6 +868,33 @@
                     
                     <button type="submit" class="submit-btn">Join Waitlist →</button>
                 </form>
+                
+                <!-- Notice about waitlist information -->
+                <div style="text-align: center; margin-top: 40px; padding: 20px; background: rgba(78, 205, 196, 0.1); border-radius: 15px; border: 1px solid rgba(78, 205, 196, 0.2);">
+                    <p style="color: rgba(255, 255, 255, 0.8); font-size: 1rem; margin: 0;">
+                        🔒 <strong>Privacy Notice:</strong> Your information is collected solely to help us prioritize development and notify you when ENFOCO launches. 
+                        We never share your data with third parties and you can unsubscribe at any time.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Share Section -->
+        <section class="share-section">
+            <div class="container">
+                <h3 style="color: #4ECDC4; margin-bottom: 20px; font-size: 1.5rem;">Help Spread the Word</h3>
+                <p style="color: rgba(255, 255, 255, 0.8); margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Know someone who needs better global content? Share ENFOCO with professionals, students, or anyone seeking quality insights from diverse regions.
+                </p>
+                
+                <button class="share-button" onclick="sharePage()">
+                    <span class="share-icon">📤</span>
+                    <span class="share-text">Share ENFOCO</span>
+                </button>
+                
+                <div class="share-note">
+                    📱 Mobile users can share directly • 💻 Desktop users get a copyable link
+                </div>
             </div>
         </section>
 
@@ -866,6 +952,35 @@
                 closeModal();
             }
         });
+
+        // Share functionality
+        function sharePage() {
+            if (navigator.share) {
+                // Use native sharing on mobile devices
+                navigator.share({
+                    title: 'ENFOCO - Global Content Beyond Western Perspectives',
+                    text: 'Check out ENFOCO - a platform for professional content from regions the big platforms ignore!',
+                    url: 'https://e-eenfocco.vercel.app/'
+                });
+            } else {
+                // Fallback for desktop - copy link to clipboard
+                navigator.clipboard.writeText('https://e-eenfocco.vercel.app/').then(() => {
+                    // Show success message
+                    const shareButton = document.querySelector('.share-button');
+                    const originalText = shareButton.innerHTML;
+                    shareButton.innerHTML = '<span class="share-icon">✅</span><span class="share-text">Link Copied!</span>';
+                    shareButton.style.background = 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)';
+                    
+                    setTimeout(() => {
+                        shareButton.innerHTML = originalText;
+                        shareButton.style.background = 'linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%)';
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback if clipboard fails
+                    alert('Link copied to clipboard: https://e-eenfocco.vercel.app/');
+                });
+            }
+        }
 
         // Generic function to send data to backend API
         async function sendToAPI(endpoint, data) {
