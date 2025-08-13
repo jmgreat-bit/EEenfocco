@@ -72,51 +72,67 @@
             border: 1px solid rgba(78, 205, 196, 0.3);
         }
 
-        /* Hide default Google Translate widget */
+        /* Google Translate Styling - Make it look like your design */
         #google_translate_element {
+            display: inline-block !important;
+        }
+
+        /* Style the Google Translate widget to match your design */
+        .goog-te-combo {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 8px 12px !important;
+            color: white !important;
+            font-size: 13px !important;
+            cursor: pointer !important;
+            outline: none !important;
+            backdrop-filter: blur(10px) !important;
+            transition: all 0.3s ease !important;
+            min-width: 100px !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+
+        .goog-te-combo:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-color: rgba(78, 205, 196, 0.4) !important;
+        }
+
+        .goog-te-combo:focus {
+            border-color: #4ECDC4 !important;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3) !important;
+        }
+
+        /* Hide the Google Translate branding */
+        .goog-te-gadget {
+            font-size: 0 !important;
+            color: transparent !important;
+        }
+
+        .goog-te-gadget > span > a {
             display: none !important;
         }
 
-        /* Custom Language Dropdown */
+        .goog-te-gadget > span {
+            border: none !important;
+            background: none !important;
+        }
+
+        /* Hide the "Powered by Google" text */
+        .goog-te-gadget .goog-te-combo {
+            margin: 0 !important;
+        }
+
+        /* Style the options */
+        .goog-te-combo option {
+            background: #1a1a2e !important;
+            color: white !important;
+            padding: 8px !important;
+        }
+
+        /* Hide the custom dropdown since we're using Google's now */
         .language-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .language-select {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: white;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            min-width: 100px;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 8px center;
-            background-repeat: no-repeat;
-            background-size: 16px;
-            padding-right: 30px;
-        }
-
-        .language-select:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(78, 205, 196, 0.4);
-        }
-
-        .language-select:focus {
-            border-color: #4ECDC4;
-            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
-        }
-
-        .language-select option {
-            background: #1a1a2e;
-            color: white;
-            padding: 8px;
+            display: none;
         }
 
         /* Hero Section */
@@ -698,25 +714,8 @@
             new google.translate.TranslateElement({
                 pageLanguage: 'en',
                 includedLanguages: 'en,es,fr,de,it,pt,ru,zh,ja,ko,ar,hi,tr,pl,nl,sv,da,no,fi',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
-        }
-
-        // Function to trigger translation
-        function translateTo(langCode) {
-            const selectElement = document.querySelector('#google_translate_element select');
-            if (selectElement) {
-                selectElement.value = langCode;
-                selectElement.dispatchEvent(new Event('change'));
-            }
-        }
-
-        // Custom dropdown change handler
-        function handleLanguageChange(select) {
-            if (select.value) {
-                translateTo(select.value);
-            }
         }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -732,29 +731,7 @@
                 <div class="nav-right">
                     <div class="nav-status">Coming Soon</div>
                     
-                    <!-- Custom Language Dropdown -->
-                    <div class="language-dropdown">
-                        <select class="language-select" onchange="handleLanguageChange(this)">
-                            <option value="">🌐 Language</option>
-                            <option value="en">🇺🇸 English</option>
-                            <option value="es">🇪🇸 Español</option>
-                            <option value="fr">🇫🇷 Français</option>
-                            <option value="de">🇩🇪 Deutsch</option>
-                            <option value="it">🇮🇹 Italiano</option>
-                            <option value="pt">🇵🇹 Português</option>
-                            <option value="ru">🇷🇺 Русский</option>
-                            <option value="zh">🇨🇳 中文</option>
-                            <option value="ja">🇯🇵 日本語</option>
-                            <option value="ko">🇰🇷 한국어</option>
-                            <option value="ar">🇸🇦 العربية</option>
-                            <option value="hi">🇮🇳 हिन्दी</option>
-                            <option value="tr">🇹🇷 Türkçe</option>
-                            <option value="pl">🇵🇱 Polski</option>
-                            <option value="nl">🇳🇱 Nederlands</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Hidden Google Translate Element -->
+                    <!-- Google Translate Element (now styled to match your design) -->
                     <div id="google_translate_element"></div>
                 </div>
             </nav>
