@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENFOCO - Posts</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; margin: 0; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .topbar { display:flex; justify-content: space-between; align-items:center; padding: 16px 0; }
+        .brand { display:flex; align-items:center; gap:10px; color:#4ECDC4; font-weight:700; font-size:20px; }
+        .brand .logo { width:32px; height:32px; background: linear-gradient(45deg, #4ECDC4, #44A08D); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+        .btn { background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%); color:white; border:none; border-radius:10px; padding:10px 16px; cursor:pointer; text-decoration:none; font-weight:600; }
+        .btn:disabled { opacity:.6; cursor:not-allowed; }
+        .card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; margin: 16px 0; }
+        .new-post { margin-bottom: 24px; }
+        .new-post input, .new-post textarea { width:100%; padding:12px; border-radius:10px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; margin-bottom:10px; font-family: inherit; }
+        .new-post textarea { resize: vertical; min-height: 90px; }
+        .post { display:flex; gap:16px; }
+        .post img { width: 180px; height: 120px; object-fit: cover; border-radius:10px; border:2px solid rgba(78,205,196,0.3); }
+        .post-content { flex:1; }
+        .meta { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 6px; }
+        .actions { display:flex; gap:10px; margin-top:10px; }
+        .comment-list { margin-top: 10px; padding-left: 10px; border-left: 2px solid rgba(255,255,255,0.15); }
+        .comment { font-size: 14px; margin: 6px 0; color: rgba(255,255,255,0.9); }
+        .comment small { color: rgba(255,255,255,0.7); }
+        .comment-form { display:flex; gap:8px; margin-top: 8px; }
+        .comment-form input { flex: 0 0 150px; padding:8px; border-radius:8px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; }
+        .comment-form textarea { flex:1; padding:8px; border-radius:8px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; resize: vertical; min-height:38px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <div class="brand"><div class="logo">E</div> ENFOCO Posts</div>
+            <a href="/" class="btn">Home</a>
+        </div>
+
+        <div class="card new-post">
+            <h3 style="color:#4ECDC4; margin-top:0;">Create a new post</h3>
+            <input id="newAuthor" placeholder="Your name (optional)" />
+            <input id="newImage" placeholder="Image URL (required)" />
+            <textarea id="newDesc" placeholder="Description (required)"></textarea>
+            <button class="btn" id="createBtn">Post</button>
+            <div id="createMsg" style="margin-top:8px; font-size: 14px;"></div>
+        </div>
+
+        <div id="feed"></div>
+    </div>
+
+    <script>
+        const API = '/api';
+
+        function fmtDate(iso) {
+            try { return new Date(iso).toLocaleString(); } catch { return ''; }
+        }
+
+        async function fetchPosts() {
+            const res = await fetch(`${API}/posts`);
+            const posts = await res.json();
+            renderFeed(posts);
+        }
+
+        function el(html) {
+            const template = document.createElement('template');
+            template.innerHTML = html.trim();
+            return template.content.firstChild;
+        }
+
+        function renderFeed(posts) {
+            const feed = document.getElementById('feed');
+            feed.innerHTML = '';
+            if (!posts.length) {
+                feed.appendChild(el('<div class="card">No posts yet. Be the first to post!</div>'));
+                return;
+            }
+            posts.forEach(p => {
+                const card = el(`<div class="card">
+                    <div class="post">
+                        <img src="${p.imageUrl}" alt="post image" onerror="this.src='images/lastly.png'" />
+                        <div class="post-content">
+                            <div style="font-weight:600; margin-bottom:6px;">${escapeHtml(p.description)}</div>
+                            <div class="meta">by ${escapeHtml(p.author || 'Anonymous')} • ${fmtDate(p.createdAt)} • <span data-like-count="${p.id}">${p.likes || 0}</span> likes</div>
+                            <div class="actions">
+                                <button class="btn" data-like="${p.id}">Like</button>
+                            </div>
+                            <div class="comment-list" id="comments-${p.id}"></div>
+                            <form class="comment-form" data-comment-form="${p.id}">
+                                <input name="author" placeholder="Name (optional)" />
+                                <textarea name="text" placeholder="Add a comment..."></textarea>
+                                <button class="btn" type="submit">Comment</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>`);
+
+                // Render comments
+                const list = card.querySelector(`#comments-${p.id}`);
+                (p.comments || []).forEach(c => {
+                    list.appendChild(el(`<div class="comment"><strong>${escapeHtml(c.author || 'Anonymous')}:</strong> ${escapeHtml(c.text)} <small>• ${fmtDate(c.createdAt)}</small></div>`));
+                });
+
+                // Like handler
+                card.querySelector(`[data-like="${p.id}"]`).addEventListener('click', async () => {
+                    const res = await fetch(`${API}/posts/${p.id}/like`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                    if (res.ok) {
+                        const data = await res.json();
+                        const likeSpan = card.querySelector(`[data-like-count="${p.id}"]`);
+                        likeSpan.textContent = data.likes;
+                    }
+                });
+
+                // Comment handler
+                card.querySelector(`[data-comment-form="${p.id}"]`).addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const fd = new FormData(e.currentTarget);
+                    const payload = { author: fd.get('author'), text: fd.get('text') };
+                    if (!payload.text || !payload.text.trim()) return;
+                    const res = await fetch(`${API}/posts/${p.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (res.ok) {
+                        const c = await res.json();
+                        list.appendChild(el(`<div class="comment"><strong>${escapeHtml(c.author || 'Anonymous')}:</strong> ${escapeHtml(c.text)} <small>• ${fmtDate(c.createdAt)}</small></div>`));
+                        e.currentTarget.reset();
+                    }
+                });
+
+                feed.appendChild(card);
+            });
+        }
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        document.getElementById('createBtn').addEventListener('click', async () => {
+            const author = document.getElementById('newAuthor').value.trim();
+            const imageUrl = document.getElementById('newImage').value.trim();
+            const description = document.getElementById('newDesc').value.trim();
+            const msg = document.getElementById('createMsg');
+            msg.textContent = '';
+            if (!imageUrl || !description) {
+                msg.textContent = 'Image URL and Description are required.';
+                msg.style.color = '#fca5a5';
+                return;
+            }
+            const btn = document.getElementById('createBtn');
+            btn.disabled = true;
+            btn.textContent = 'Posting...';
+            try {
+                const res = await fetch(`${API}/posts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl, description, author }) });
+                if (!res.ok) throw new Error('Failed');
+                document.getElementById('newAuthor').value = '';
+                document.getElementById('newImage').value = '';
+                document.getElementById('newDesc').value = '';
+                msg.textContent = 'Posted!';
+                msg.style.color = '#86efac';
+                await fetchPosts();
+            } catch (e) {
+                msg.textContent = 'Could not post right now.';
+                msg.style.color = '#fca5a5';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Post';
+            }
+        });
+
+        fetchPosts();
+    </script>
+</body>
+</html>
+
+
