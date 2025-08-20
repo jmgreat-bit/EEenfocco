@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
+const fs = require('fs');
 require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +22,38 @@ app.get('/favicon.ico', (req, res) => {
 app.get('/', (req, res) => {
  res.sendFile(__dirname + '/index.html');
 });
+
+// Serve posts page
+app.get('/posts', (req, res) => {
+  res.sendFile(path.join(__dirname, 'posts.html'));
+});
+
+// Simple JSON file storage for posts
+const DATA_FILE = path.join(__dirname, 'posts.json');
+
+function loadPosts() {
+  try {
+    if (!fs.existsSync(DATA_FILE)) {
+      fs.writeFileSync(DATA_FILE, JSON.stringify([]), 'utf8');
+      return [];
+    }
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    return JSON.parse(raw || '[]');
+  } catch (error) {
+    console.error('Failed to load posts:', error);
+    return [];
+  }
+}
+
+function savePosts(posts) {
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(posts, null, 2), 'utf8');
+    return true;
+  } catch (error) {
+    console.error('Failed to save posts:', error);
+    return false;
+  }
+}
 
 // Airtable configuration
 const AIRTABLE_CONFIG = {
@@ -126,6 +159,64 @@ app.post('/api/partnerships', async (req, res) => {
        return res.json({ message: 'Partnership request received!' });
    }
    return res.status(500).json({ error: 'Failed to send partnership request', details: result.airtable || result.error });
+});
+
+// Posts API
+app.get('/api/posts', (req, res) => {
+   const posts = loadPosts().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+   res.json(posts);
+});
+
+app.post('/api/posts', (req, res) => {
+   const { imageUrl, description, author } = req.body || {};
+   if (!imageUrl || !description) {
+       return res.status(400).json({ error: 'imageUrl and description are required' });
+   }
+   const posts = loadPosts();
+   const newPost = {
+       id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+       imageUrl,
+       description,
+       author: author && String(author).trim() ? String(author).trim() : 'Anonymous',
+       createdAt: new Date().toISOString(),
+       likes: 0,
+       comments: []
+   };
+   posts.push(newPost);
+   const ok = savePosts(posts);
+   if (!ok) return res.status(500).json({ error: 'Failed to save post' });
+   res.status(201).json(newPost);
+});
+
+app.post('/api/posts/:id/like', (req, res) => {
+   const { id } = req.params;
+   const posts = loadPosts();
+   const idx = posts.findIndex(p => p.id === id);
+   if (idx === -1) return res.status(404).json({ error: 'Post not found' });
+   posts[idx].likes = (posts[idx].likes || 0) + 1;
+   const ok = savePosts(posts);
+   if (!ok) return res.status(500).json({ error: 'Failed to save like' });
+   res.json({ likes: posts[idx].likes });
+});
+
+app.post('/api/posts/:id/comments', (req, res) => {
+   const { id } = req.params;
+   const { author, text } = req.body || {};
+   if (!text) return res.status(400).json({ error: 'Comment text is required' });
+   const posts = loadPosts();
+   const idx = posts.findIndex(p => p.id === id);
+   if (idx === -1) return res.status(404).json({ error: 'Post not found' });
+   const comment = {
+       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+       author: author && String(author).trim() ? String(author).trim() : 'Anonymous',
+       text: String(text).trim(),
+       createdAt: new Date().toISOString()
+   };
+   posts[idx].comments = posts[idx].comments || [];
+   posts[idx].comments.push(comment);
+   const ok = savePosts(posts);
+   if (!ok) return res.status(500).json({ error: 'Failed to save comment' });
+   res.status(201).json(comment);
 });
 
 // Health check
