@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
+const crypto = require('crypto');
 require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -53,6 +54,44 @@ function savePosts(posts) {
     console.error('Failed to save posts:', error);
     return false;
   }
+}
+
+// Admin auth (simple password + signed cookie)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'changeme';
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(16).toString('hex');
+const ADMIN_COOKIE = 'adminSession';
+
+function signToken(payloadStr) {
+  const signature = crypto.createHmac('sha256', SESSION_SECRET).update(payloadStr).digest('hex');
+  const token = Buffer.from(payloadStr).toString('base64') + '.' + signature;
+  return token;
+}
+
+function verifyToken(token) {
+  if (!token || typeof token !== 'string' || !token.includes('.')) return false;
+  const [b64, signature] = token.split('.');
+  try {
+    const payloadStr = Buffer.from(b64, 'base64').toString('utf8');
+    const expected = crypto.createHmac('sha256', SESSION_SECRET).update(payloadStr).digest('hex');
+    return expected === signature && payloadStr === 'admin';
+  } catch (_) {
+    return false;
+  }
+}
+
+function parseCookies(req) {
+  const header = req.headers.cookie || '';
+  return header.split(';').reduce((acc, part) => {
+    const [k, ...v] = part.trim().split('=');
+    if (!k) return acc;
+    acc[k] = decodeURIComponent(v.join('='));
+    return acc;
+  }, {});
+}
+
+function isAdmin(req) {
+  const cookies = parseCookies(req);
+  return verifyToken(cookies[ADMIN_COOKIE]);
 }
 
 // Airtable configuration
@@ -161,6 +200,26 @@ app.post('/api/partnerships', async (req, res) => {
    return res.status(500).json({ error: 'Failed to send partnership request', details: result.airtable || result.error });
 });
 
+// Admin routes
+app.post('/api/admin/login', (req, res) => {
+   const { password } = req.body || {};
+   if (!password || password !== ADMIN_PASSWORD) {
+       return res.status(401).json({ error: 'Invalid credentials' });
+   }
+   const token = signToken('admin');
+   res.setHeader('Set-Cookie', `${ADMIN_COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax`);
+   return res.json({ ok: true });
+});
+
+app.post('/api/admin/logout', (req, res) => {
+   res.setHeader('Set-Cookie', `${ADMIN_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+   return res.json({ ok: true });
+});
+
+app.get('/api/admin/me', (req, res) => {
+   return res.json({ isAdmin: isAdmin(req) });
+});
+
 // Posts API
 app.get('/api/posts', (req, res) => {
    const posts = loadPosts().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -168,6 +227,9 @@ app.get('/api/posts', (req, res) => {
 });
 
 app.post('/api/posts', (req, res) => {
+   if (!isAdmin(req)) {
+       return res.status(403).json({ error: 'Only admin can create posts' });
+   }
    const { imageUrl, description, author } = req.body || {};
    if (!imageUrl || !description) {
        return res.status(400).json({ error: 'imageUrl and description are required' });
