@@ -13,30 +13,33 @@
         .btn { background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%); color:white; border:none; border-radius:10px; padding:10px 16px; cursor:pointer; text-decoration:none; font-weight:600; }
         .btn:disabled { opacity:.6; cursor:not-allowed; }
         .card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px; margin: 16px 0; }
-        .new-post { margin-bottom: 24px; }
+        .new-post { margin-bottom: 24px; display:none; }
         .new-post input, .new-post textarea { width:100%; padding:12px; border-radius:10px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; margin-bottom:10px; font-family: inherit; }
         .new-post textarea { resize: vertical; min-height: 90px; }
         .post { display:flex; gap:16px; }
         .post img { width: 180px; height: 120px; object-fit: cover; border-radius:10px; border:2px solid rgba(78,205,196,0.3); }
         .post-content { flex:1; }
         .meta { color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 6px; }
-        .actions { display:flex; gap:10px; margin-top:10px; }
-        .comment-list { margin-top: 10px; padding-left: 10px; border-left: 2px solid rgba(255,255,255,0.15); }
-        .comment { font-size: 14px; margin: 6px 0; color: rgba(255,255,255,0.9); }
-        .comment small { color: rgba(255,255,255,0.7); }
-        .comment-form { display:flex; gap:8px; margin-top: 8px; }
-        .comment-form input { flex: 0 0 150px; padding:8px; border-radius:8px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; }
-        .comment-form textarea { flex:1; padding:8px; border-radius:8px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; resize: vertical; min-height:38px; }
+        /* Hide interactions for viewers: show only posts */
+        .actions, .comment-list, .comment-form { display:none !important; }
+        /* Modal */
+        .modal { display:none; position:fixed; inset:0; background: rgba(0,0,0,0.6); align-items:center; justify-content:center; z-index:1000; }
+        .modal.active { display:flex; }
+        .modal-card { background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); padding:16px; border-radius:12px; width:320px; }
+        .modal input { width:100%; padding:10px; border-radius:8px; border:2px solid rgba(78,205,196,0.3); background: rgba(255,255,255,0.08); color:white; margin-top:8px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="topbar">
             <div class="brand"><div class="logo">E</div> ENFOCO Posts</div>
-            <a href="/" class="btn">Home</a>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <button class="btn" id="adminBtn">Admin</button>
+                <a href="/" class="btn">Home</a>
+            </div>
         </div>
 
-        <div class="card new-post">
+        <div class="card new-post" id="newPostCard">
             <h3 style="color:#4ECDC4; margin-top:0;">Create a new post</h3>
             <input id="newAuthor" placeholder="Your name (optional)" />
             <input id="newImage" placeholder="Image URL (required)" />
@@ -48,15 +51,29 @@
         <div id="feed"></div>
     </div>
 
+    <div class="modal" id="loginModal">
+        <div class="modal-card">
+            <h3 style="color:#4ECDC4; margin:0 0 8px;">Admin Login</h3>
+            <p style="margin:0 0 8px; color: rgba(255,255,255,0.8);">Enter admin password</p>
+            <input id="adminPassword" type="password" placeholder="Password" />
+            <div style="display:flex; gap:8px; margin-top:12px;">
+                <button class="btn" id="loginSubmit">Login</button>
+                <button class="btn" id="loginCancel" style="background:rgba(255,255,255,0.15);">Cancel</button>
+            </div>
+            <div id="loginMsg" style="margin-top:8px; font-size: 14px;"></div>
+        </div>
+    </div>
+
     <script>
         const API = '/api';
+        let admin = false;
 
         function fmtDate(iso) {
             try { return new Date(iso).toLocaleString(); } catch { return ''; }
         }
 
         async function fetchPosts() {
-            const res = await fetch(`${API}/posts`);
+            const res = await fetch(`${API}/posts`, { credentials: 'same-origin' });
             const posts = await res.json();
             renderFeed(posts);
         }
@@ -80,49 +97,10 @@
                         <img src="${p.imageUrl}" alt="post image" onerror="this.src='images/lastly.png'" />
                         <div class="post-content">
                             <div style="font-weight:600; margin-bottom:6px;">${escapeHtml(p.description)}</div>
-                            <div class="meta">by ${escapeHtml(p.author || 'Anonymous')} • ${fmtDate(p.createdAt)} • <span data-like-count="${p.id}">${p.likes || 0}</span> likes</div>
-                            <div class="actions">
-                                <button class="btn" data-like="${p.id}">Like</button>
-                            </div>
-                            <div class="comment-list" id="comments-${p.id}"></div>
-                            <form class="comment-form" data-comment-form="${p.id}">
-                                <input name="author" placeholder="Name (optional)" />
-                                <textarea name="text" placeholder="Add a comment..."></textarea>
-                                <button class="btn" type="submit">Comment</button>
-                            </form>
+                            <div class="meta">by ${escapeHtml(p.author || 'Anonymous')} • ${fmtDate(p.createdAt)}</div>
                         </div>
                     </div>
                 </div>`);
-
-                // Render comments
-                const list = card.querySelector(`#comments-${p.id}`);
-                (p.comments || []).forEach(c => {
-                    list.appendChild(el(`<div class="comment"><strong>${escapeHtml(c.author || 'Anonymous')}:</strong> ${escapeHtml(c.text)} <small>• ${fmtDate(c.createdAt)}</small></div>`));
-                });
-
-                // Like handler
-                card.querySelector(`[data-like="${p.id}"]`).addEventListener('click', async () => {
-                    const res = await fetch(`${API}/posts/${p.id}/like`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-                    if (res.ok) {
-                        const data = await res.json();
-                        const likeSpan = card.querySelector(`[data-like-count="${p.id}"]`);
-                        likeSpan.textContent = data.likes;
-                    }
-                });
-
-                // Comment handler
-                card.querySelector(`[data-comment-form="${p.id}"]`).addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const fd = new FormData(e.currentTarget);
-                    const payload = { author: fd.get('author'), text: fd.get('text') };
-                    if (!payload.text || !payload.text.trim()) return;
-                    const res = await fetch(`${API}/posts/${p.id}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (res.ok) {
-                        const c = await res.json();
-                        list.appendChild(el(`<div class="comment"><strong>${escapeHtml(c.author || 'Anonymous')}:</strong> ${escapeHtml(c.text)} <small>• ${fmtDate(c.createdAt)}</small></div>`));
-                        e.currentTarget.reset();
-                    }
-                });
 
                 feed.appendChild(card);
             });
@@ -152,7 +130,12 @@
             btn.disabled = true;
             btn.textContent = 'Posting...';
             try {
-                const res = await fetch(`${API}/posts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl, description, author }) });
+                const res = await fetch(`${API}/posts`, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imageUrl, description, author }) });
+                if (res.status === 403) {
+                    msg.textContent = 'Admin only. Please login from the Admin button.';
+                    msg.style.color = '#fca5a5';
+                    return;
+                }
                 if (!res.ok) throw new Error('Failed');
                 document.getElementById('newAuthor').value = '';
                 document.getElementById('newImage').value = '';
@@ -168,6 +151,62 @@
                 btn.textContent = 'Post';
             }
         });
+
+        // Admin UI
+        const adminBtn = document.getElementById('adminBtn');
+        const loginModal = document.getElementById('loginModal');
+        const loginSubmit = document.getElementById('loginSubmit');
+        const loginCancel = document.getElementById('loginCancel');
+        const loginMsg = document.getElementById('loginMsg');
+        const newPostCard = document.getElementById('newPostCard');
+
+        function setAdminUI(state) {
+            admin = !!state;
+            newPostCard.style.display = admin ? 'block' : 'none';
+            adminBtn.textContent = admin ? 'Logout' : 'Admin';
+        }
+
+        async function checkMe() {
+            try {
+                const res = await fetch(`${API}/admin/me`, { credentials: 'same-origin' });
+                const data = await res.json();
+                setAdminUI(!!data.isAdmin);
+            } catch (_) {
+                setAdminUI(false);
+            }
+        }
+
+        adminBtn.addEventListener('click', async () => {
+            if (admin) {
+                await fetch(`${API}/admin/logout`, { method: 'POST', credentials: 'same-origin' });
+                setAdminUI(false);
+                return;
+            }
+            loginMsg.textContent = '';
+            document.getElementById('adminPassword').value = '';
+            loginModal.classList.add('active');
+        });
+
+        loginCancel.addEventListener('click', () => loginModal.classList.remove('active'));
+        loginSubmit.addEventListener('click', async () => {
+            loginMsg.textContent = '';
+            const password = document.getElementById('adminPassword').value;
+            try {
+                const res = await fetch(`${API}/admin/login`, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) });
+                if (!res.ok) {
+                    loginMsg.textContent = 'Invalid password';
+                    loginMsg.style.color = '#fca5a5';
+                    return;
+                }
+                loginModal.classList.remove('active');
+                await checkMe();
+            } catch (e) {
+                loginMsg.textContent = 'Login failed';
+                loginMsg.style.color = '#fca5a5';
+            }
+        });
+
+        checkMe();
 
         fetchPosts();
     </script>
